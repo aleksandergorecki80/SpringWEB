@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/tasks/")
@@ -29,7 +30,9 @@ public class TaskController {
 
   @GetMapping(value = "{taskId}")
   public TaskDto getTask(@PathVariable Long taskId) {
-    return new TaskDto(1L, "test title", "test content");
+    return service.getTaskById(taskId)
+        .map(taskMapper::mapToTaskDto)
+        .orElseThrow(() -> new RuntimeException("No task found"));
   }
 
   @DeleteMapping(value = "{taskId}")
