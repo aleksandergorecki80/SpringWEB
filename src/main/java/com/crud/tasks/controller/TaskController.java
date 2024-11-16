@@ -4,20 +4,13 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
-import com.crud.tasks.mapper.TaskMapper;
-import com.crud.tasks.service.DbService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,7 +37,8 @@ public class TaskController {
     }
 
   @DeleteMapping(value = "{taskId}")
-  public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
+  public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) throws TaskNotFoundException {
+    service.deleteTaskById(taskId);
     return ResponseEntity.ok().build();
   }
 
