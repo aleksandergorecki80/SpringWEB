@@ -10,8 +10,13 @@ import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +39,14 @@ public class TaskController {
   }
 
   @GetMapping(value = "{taskId}")
-  public TaskDto getTask(@PathVariable Long taskId) {
-    return service.getTaskById(taskId)
-        .map(taskMapper::mapToTaskDto)
-        .orElseThrow(()-> new RuntimeException("Task not found"));
+  public ResponseEntity<TaskDto> getTask(@PathVariable Long taskId) {
+    try {
+      return new ResponseEntity<>(taskMapper.mapToTaskDto(service.getTaskById(taskId)), HttpStatus.OK);
+    } catch (TaskNotFoundException e) {
+      return new ResponseEntity<>(
+          new TaskDto(0L, "There is no task with id equals " + taskId, ""), HttpStatus.NOT_FOUND
+      );
+    }
   }
 
   @DeleteMapping(value = "{taskId}")
@@ -50,7 +59,9 @@ public class TaskController {
     return new TaskDto(1L, "Edited test title", "test content");
   }
 
-  @PostMapping
-  public void createTask(TaskDto taskDto) {
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+  public void createTask(@RequestBody TaskDto taskDto) {
+    Task task = taskMapper.mapToTask(taskDto);
+    service.saveTask(task);
   }
 }
