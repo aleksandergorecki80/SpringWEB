@@ -10,12 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
-@RequestMapping("/v1/tasks/")
+@RequestMapping("/v1/tasks")
 public class TaskController {
 
   private final DbService service;
