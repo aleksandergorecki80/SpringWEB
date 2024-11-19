@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/tasks/")
+@RequestMapping("/v1/tasks")
 public class TaskController {
 
   private final DbService service;
