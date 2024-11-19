@@ -5,31 +5,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/tasks")
+@RequestMapping("/v1/tasks/")
 public class TaskController {
+
   @GetMapping
   public List<TaskDto> getTasks() {
     return new ArrayList<>();
   }
 
-  public TaskDto getTask(Long id) {
+  @GetMapping(value = "{taskId}")
+  public TaskDto getTask(@PathVariable Long taskId) {
     return new TaskDto(1L, "test title", "test content");
   }
 
-  public void deleteTask(Long id) {
+  @DeleteMapping(value = "{taskId}")
+  public void deleteTask(@PathVariable Long taskId) {
 
   }
 
-  public TaskDto updateTask(TaskDto taskDto) {
+  @PutMapping(value = "{taskId}")
+  public TaskDto updateTask(@PathVariable Long taskId) {
     return new TaskDto(1L, "Edited test title", "test content");
   }
 
+  @PostMapping
   public void createTask(TaskDto taskDto) {
-
   }
 }
