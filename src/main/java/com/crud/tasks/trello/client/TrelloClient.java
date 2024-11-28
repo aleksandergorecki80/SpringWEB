@@ -26,31 +26,24 @@ public class TrelloClient {
   private String username;
 
   public List<TrelloBoardDto> getTrelloBoards() {
-    URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + username + "/boards")
-        .queryParam("key", trelloAppKey)
-        .queryParam("token", trelloToken)
-        .queryParam("fields", "name,id")
-        .build()
-        .encode()
-        .toUri();
+    URI url = this.getUrl();
 
     TrelloBoardDto[] boardsResponse = restTemplate.getForObject(url, TrelloBoardDto[].class);
 
     return Optional.ofNullable(boardsResponse)
         .map(Arrays::asList)
         .orElse(Collections.emptyList());
+  }
 
-//    if(boardsResponse !=null) {
-//      return Arrays.asList(boardsResponse);
-//    }
-//
-//    return new ArrayList<>();
+  private URI getUrl() {
+    return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + username + "/boards")
+        .queryParam("key", trelloAppKey)
+        .queryParam("token", trelloToken)
+        .queryParam("fields", "name,id")
+        .build()
+        .encode()
+        .toUri();
+  }
 
-//    return Collections.emptyList();
-
-//    TrelloBoardDto[] boardsResponse = restTemplate.getForObject(
-//        trelloApiEndpoint + "/members/kodillaautor/boards" + "?key=" + trelloAppKey + "&token=" + trelloToken,
-//        TrelloBoardDto[].class
-//    );
-  };
+  ;
 }
