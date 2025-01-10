@@ -1,9 +1,6 @@
 package com.crud.tasks.mapper;
 
-import com.crud.tasks.domain.TrelloCard;
-import com.crud.tasks.domain.TrelloCardDto;
-import com.crud.tasks.domain.TrelloList;
-import com.crud.tasks.domain.TrelloListDto;
+import com.crud.tasks.domain.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class TrelloMapperTests {
     }
 
     @Test
-    void mapToListTest() {
+    void testMapToList() {
         // Given
         TrelloListDto list1 = new TrelloListDto("1", "To Do", false);
         TrelloListDto list2 = new TrelloListDto("2", "Done", true);
@@ -53,5 +50,40 @@ public class TrelloMapperTests {
         assertEquals(result.getLast().getId(), trelloListDtoList.getLast().getId());
         assertEquals(result.getLast().getName(), trelloListDtoList.getLast().getName());
         assertEquals(result.getLast().isClosed(), trelloListDtoList.getLast().isClosed());
+    }
+
+    @Test
+    void testMapToBoards() {
+        // Given
+        TrelloListDto list1 = new TrelloListDto("1", "To Do", false);
+        TrelloListDto list2 = new TrelloListDto("2", "Done", true);
+        TrelloListDto list3 = new TrelloListDto("3", "To Do 2", false);
+        TrelloListDto list4 = new TrelloListDto("4", "Done 2", true);
+
+        List<TrelloListDto> trelloListDtoList1= new ArrayList<>();
+        trelloListDtoList1.add(list1);
+        trelloListDtoList1.add(list2);
+
+        List<TrelloListDto> trelloListDtoList2= new ArrayList<>();
+        trelloListDtoList1.add(list3);
+        trelloListDtoList1.add(list4);
+
+        TrelloBoardDto trelloBoardDto1 = new TrelloBoardDto("1", "Board 1", trelloListDtoList1);
+        TrelloBoardDto trelloBoardDto2 = new TrelloBoardDto("2", "Board 2", trelloListDtoList2);
+
+        List<TrelloBoardDto> trelloBoardsDto = new ArrayList<>();
+        trelloBoardsDto.add(trelloBoardDto1);
+        trelloBoardsDto.add(trelloBoardDto2);
+
+
+        // When
+        List<TrelloBoard> result = trelloMapper.mapToBoards(trelloBoardsDto);
+
+        // Then
+        assertEquals(2, result.size());
+
+        assertEquals("1", trelloBoardsDto.getFirst().getId());
+        assertEquals("Board 2", trelloBoardsDto.getLast().getName());
+
     }
 }
