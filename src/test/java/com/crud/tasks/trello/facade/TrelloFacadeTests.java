@@ -1,12 +1,8 @@
-package com.crud.tasks.trello.client;
+package com.crud.tasks.trello.facade;
 
-import com.crud.tasks.domain.TrelloBoard;
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloList;
-import com.crud.tasks.domain.TrelloListDto;
+import com.crud.tasks.domain.*;
 import com.crud.tasks.mapper.TrelloMapper;
 import com.crud.tasks.service.TrelloService;
-import com.crud.tasks.trello.facade.TrelloFacade;
 import com.crud.tasks.trello.validator.TrelloValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -103,6 +99,22 @@ public class TrelloFacadeTests {
                 assertFalse(trelloListDto.isClosed());
             });
         });
+    }
 
+    @Test
+    void shouldCreateCard() {
+        // Given
+        TrelloCardDto cardDto = new TrelloCardDto("Task DTO 1", "Description of the task DTO", "left", "654321");
+        TrelloCard card = new TrelloCard("Task 1", "Description of the task", "top", "12345");
+
+
+        // When
+        when(trelloMapper.mapToCard(cardDto)).thenReturn(card);
+        when(trelloMapper.mapToCardDto(card)).thenReturn(cardDto);
+
+        CreatedTrelloCardDto result = trelloFacade.createCard(cardDto);
+        System.out.println(result + " == result");
+
+        // Then
     }
 }

@@ -24,9 +24,15 @@ public class TrelloFacade {
     }
 
     public CreatedTrelloCardDto createCard(final TrelloCardDto trelloCardDto) {
+        System.out.println(trelloCardDto + " trelloCardDto");
+
         TrelloCard trelloCard = trelloMapper.mapToCard(trelloCardDto);
+        System.out.println(trelloCard + " trelloCard");
+
         trelloValidator.validateCard(trelloCard);
-        return trelloService.createTrelloCard(trelloMapper.mapToCardDto(trelloCard));
+        TrelloCardDto trelloCardDto1 = trelloMapper.mapToCardDto(trelloCard);
+        System.out.println(trelloCardDto1 + " trelloCardDto1");
+        return trelloService.createTrelloCard(trelloCardDto1);
     }
 
 }
