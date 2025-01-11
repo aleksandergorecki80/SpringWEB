@@ -14,8 +14,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class TrelloServiceTests {
-    @ExtendWith(MockitoExtension.class)
 
     @InjectMocks
     private TrelloService trelloService;

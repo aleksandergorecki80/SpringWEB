@@ -16,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class TrelloFacadeTests {
-    @ExtendWith(MockitoExtension.class)
-
-
         @InjectMocks
         private TrelloFacade trelloFacade;
 
