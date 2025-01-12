@@ -10,7 +10,6 @@ public class OrdersTests {
     @Test
     void testCalculateValue() {
         // Given
-
         Order order = new Order(101L, 202L, productService);
         Item item1 = new Item(1L, 2);
         order.getItems().add(item1);

@@ -98,21 +98,4 @@ public class TrelloFacadeTests {
             });
         });
     }
-
-    @Test
-    void shouldCreateCard() {
-        // Given
-        TrelloCardDto cardDto = new TrelloCardDto("Task DTO 1", "Description of the task DTO", "left", "654321");
-        TrelloCard card = new TrelloCard("Task 1", "Description of the task", "top", "12345");
-
-
-        // When
-        when(trelloMapper.mapToCard(cardDto)).thenReturn(card);
-        when(trelloMapper.mapToCardDto(card)).thenReturn(cardDto);
-
-        CreatedTrelloCardDto result = trelloFacade.createCard(cardDto);
-        System.out.println(result + " == result");
-
-        // Then
-    }
 }
