@@ -4,6 +4,7 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import com.google.gson.Gson;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +97,57 @@ class TaskControllerTest {
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
     };
+
+    @Test
+    void shouldUpdateTask() throws Exception {
+        // Given
+        Task task = new Task(101L, "Task 101", "Description 101");
+        TaskDto taskDto = new TaskDto(101L, "Task 101", "Description 101");
+
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        when(service.saveTask(task)).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(taskDto);
+
+        // When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .put("/v1/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(101))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Task 101"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").value("Description 101"));
+    };
+
+    @Test
+    void shouldCreateTask() throws Exception {
+        // Given
+        Task task = new Task(303L, "Task 303", "Description 303");
+        TaskDto taskDto = new TaskDto(303L, "Task 303", "Description 303");
+
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(taskDto);
+
+        // When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/v1/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
 }
 
 
