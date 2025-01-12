@@ -16,9 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-import java.util.regex.Matcher;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringJUnitWebConfig
@@ -64,6 +61,41 @@ class TaskControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].title", Matchers.is("Task 202")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].content", Matchers.is("Description 202")));
     }
+
+    @Test
+    void shouldFetchTaskById() throws Exception {
+        // Given
+        Long id = 1234L;
+        Task task = new Task(101L, "Task 101", "Description 101");
+        TaskDto taskDto = new TaskDto(101L, "Task 101", "Description 101");
+
+        when(service.getTaskById(id)).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+
+        // When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get("/v1/tasks/{taskId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(101)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("Task 101")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Description 101")));
+    };
+
+    @Test
+    void shouldDeleteTaskById() throws Exception {
+        // Given
+        Long id = 1234L;
+
+        // When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .delete("/v1/tasks/{taskId}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    };
 }
 
 
