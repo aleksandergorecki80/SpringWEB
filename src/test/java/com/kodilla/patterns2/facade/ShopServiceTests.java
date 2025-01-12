@@ -4,17 +4,30 @@ import com.kodilla.patterns2.facade.api.OrderDto;
 import com.kodilla.patterns2.facade.api.OrderFacade;
 import com.kodilla.patterns2.facade.api.OrderProcessingException;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ShopServiceTests {
-  @Autowired
+  @InjectMocks
   private ShopService shopService;
 
   @Autowired
   private OrderFacade orderFacade;
+
+  @Mock
+  private Authenticator authenticator;
+
+  @Mock
+  private Order mockOrder;
 
   @Test
   public void testShopFacade() throws OrderProcessingException {
@@ -73,4 +86,32 @@ class ShopServiceTests {
       System.out.println("Access denied. User is not authenticated.");
     }
   }
+
+  @Test
+  void testOpenOrderIfUserIsAuthenticated() {
+    // Given
+    Long id = 101L;
+    when(authenticator.isAuthenticated(id)).thenReturn(true);
+
+    // When
+    Long result = shopService.openOrder(id);
+
+    // Then
+    assertEquals(1L, result);
+  }
+
+  @Test
+  void testOpenOrderIfUserIsNotAuthenticated() {
+    // Given
+    Long id = 101L;
+    when(authenticator.isAuthenticated(id)).thenReturn(false);
+
+    // When
+    Long result = shopService.openOrder(id);
+
+    // Then
+    assertEquals(-1L, result);
+  }
+
+
 }
