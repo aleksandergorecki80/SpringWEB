@@ -35,7 +35,7 @@ class TrelloControllerTest {
         // Given
         when(trelloFacade.fetchTrelloBoards()).thenReturn(List.of());
 
-        //When & Then
+        // When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .get("/v1/trello/boards")
@@ -51,13 +51,13 @@ class TrelloControllerTest {
         List<TrelloBoardDto> trelloBoards = List.of(new TrelloBoardDto("1", "Test Task", trelloLists));
         when(trelloFacade.fetchTrelloBoards()).thenReturn(trelloBoards);
 
-        //When & Then
+        // When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .get("/v1/trello/boards")
                         .contentType(MediaType.APPLICATION_JSON))
                 // Trello board fields
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(11)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.is("1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", Matchers.is("Test Task")))
                 // Trello list fields
@@ -85,7 +85,7 @@ class TrelloControllerTest {
         Gson gson = new Gson();
         String jsonContent = gson.toJson(trelloCardDto);
 
-        //When & Then
+        // When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .post("/v1/trello/cards")
