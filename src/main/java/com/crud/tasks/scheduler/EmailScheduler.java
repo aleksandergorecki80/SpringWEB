@@ -30,6 +30,7 @@ public class EmailScheduler {
     );
   }
 
+
   private String buildMessage(long size) {
     String suffix = size == 1 ? "" : "s";
     return "Currently in database you got: " + size + " task" + suffix;
