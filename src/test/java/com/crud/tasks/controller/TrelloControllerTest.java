@@ -1,8 +1,8 @@
 package com.crud.tasks.controller;
 
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloListDto;
+import com.crud.tasks.domain.*;
 import com.crud.tasks.trello.facade.TrelloFacade;
+import com.google.gson.Gson;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringJUnitWebConfig
@@ -64,5 +65,35 @@ class TrelloControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].lists[0].id", Matchers.is("1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].lists[0].name", Matchers.is("Test list")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].lists[0].closed", Matchers.is(false)));
+    };
+
+
+    @Test
+    void shouldCreateTrelloCard() throws Exception {
+        // Given
+        Trello trello = new Trello(5, 10);
+        AttachmentsByType attachmentsByType = new AttachmentsByType(trello);
+        Badges badges = new Badges(attachmentsByType);
+
+        TrelloCardDto trelloCardDto =
+                new TrelloCardDto("Test", "Test description", "top", "1");
+
+        CreatedTrelloCardDto createdTrelloCardDto =
+                new CreatedTrelloCardDto("232", "Test", "http://test.com", badges);
+
+        when(trelloFacade.createCard(any(TrelloCardDto.class))).thenReturn(createdTrelloCardDto);
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(trelloCardDto);
+
+        //When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/v1/trello/cards")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is("232")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Test")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.shortUrl", Matchers.is("http://test.com")));
     }
 }
