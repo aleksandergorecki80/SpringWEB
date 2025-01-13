@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -83,5 +84,15 @@ public class DbServiceTests {
 
         // Then
         verify(taskRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void shouldThrowTaskNotFoundExceptionWhenTaskIsMissing() {
+        // Given
+        Long taskId = 1234L;
+        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(TaskNotFoundException.class, () -> dbService.getTaskById(taskId));
     }
 }
