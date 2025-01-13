@@ -57,7 +57,7 @@ class TrelloControllerTest {
                         .get("/v1/trello/boards")
                         .contentType(MediaType.APPLICATION_JSON))
                 // Trello board fields
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(11)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.is("1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", Matchers.is("Test Task")))
                 // Trello list fields

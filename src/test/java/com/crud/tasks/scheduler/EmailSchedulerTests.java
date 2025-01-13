@@ -21,6 +21,9 @@ public class EmailSchedulerTests {
     @Mock
     private AdminConfig adminConfig;
 
+    @Mock
+    private SimpleEmailService simpleEmailService;
+
 
     @Test
     void testSendInformationEmail() {
