@@ -44,7 +44,7 @@ public class SimpleEmailService {
   private String generateEmailBody(Mail mail, EmailType emailType) {
     return switch (emailType) {
       case EmailType.IMMEDIATE -> mailCreatorService.buildTrelloCardEmail(mail.getMessage());
-      case EmailType.SCHEDULED -> mailCreatorService.buildTrelloCardEmail(mail.getMessage());
+      case EmailType.SCHEDULED -> mailCreatorService.buildTrelloTasksEmail(mail);
       default -> null;
     };
   }
