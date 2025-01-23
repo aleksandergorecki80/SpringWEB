@@ -28,6 +28,7 @@ public class SimpleEmailService {
       javaMailSender.send(mailMessage);
       log.info("Email has been sent.");
     } catch (MailException e) {
+      log.error("e: ", e);
       log.error("Failed to process email sending: " + e.getMessage(), e);
     }
   }
@@ -42,6 +43,8 @@ public class SimpleEmailService {
   }
 
   private String generateEmailBody(Mail mail, EmailType emailType) {
+    System.out.println("mail = " + mail);
+    System.out.println("emailType = " + emailType);
     return switch (emailType) {
       case EmailType.IMMEDIATE -> mailCreatorService.buildTrelloCardEmail(mail.getMessage());
       case EmailType.SCHEDULED -> mailCreatorService.buildTrelloTasksEmail(mail);

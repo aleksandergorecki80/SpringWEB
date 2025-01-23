@@ -45,9 +45,11 @@ public class MailCreatorService {
 
     public String buildTrelloTasksEmail(Mail mail) {
         Context context = new Context();
+        context.setVariable("tasks_message", mail.getMessage());
+        context.setVariable("tasks_button", "Do something");
 
 
-        return templateEngine.process("mail/created-trello-card-mail", context);
+        return templateEngine.process("mail/created-trello-task-mail", context);
     }
 
 }

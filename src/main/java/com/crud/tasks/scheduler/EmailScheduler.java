@@ -18,8 +18,8 @@ public class EmailScheduler {
   private final TaskRepository taskRepository;
   private final AdminConfig adminConfig;
 
-  @Scheduled(cron = "0 0 11 * * *")
-//@Scheduled(fixedDelay = 10000)
+//  @Scheduled(cron = "0 12 16 * * *")
+@Scheduled(fixedDelay = 10000)
   public void sendInformationEmail() {
     long size = taskRepository.count();
     simpleEmailService.send(
