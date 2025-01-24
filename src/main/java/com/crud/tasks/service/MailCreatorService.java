@@ -46,18 +46,15 @@ public class MailCreatorService {
     }
 
     public String buildTrelloTasksEmail(Mail mail) {
-        Optional<List<String>> tasks = mail.getTasks();
-        System.out.println(mail.getTasks().stream().findAny().isPresent());
-        System.out.println(tasks);
         Context context = new Context();
+        Optional<List<String>> tasks = mail.getTasks();
+
         context.setVariable("tasks_user_name", adminConfig.getAdminName());
         context.setVariable("tasks_message", mail.getMessage());
         context.setVariable("show_details", mail.getTasks().stream().findAny().isPresent());
         context.setVariable("tasks_title_list", tasks.orElseGet(Collections::emptyList));
         context.setVariable("tasks_goodbye_message", getGoodbyeMessage());
         context.setVariable("tasks_mail_company_details", getCompanyDetails());
-
-
         return templateEngine.process("mail/created-trello-task-mail", context);
     }
 
@@ -68,5 +65,4 @@ public class MailCreatorService {
     private String getCompanyDetails() {
         return adminConfig.getInfoCompanyName() + " \u25CF " + adminConfig.getInfoCompanyEmail() + " \u25CF " + adminConfig.getInfoCompanyPhone();
     }
-
 }

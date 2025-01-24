@@ -25,8 +25,8 @@ public class EmailScheduler {
   private final AdminConfig adminConfig;
   private final DbService dbService;
 
-//  @Scheduled(cron = "0 12 16 * * *")
-@Scheduled(fixedDelay = 10000)
+  @Scheduled(cron = "0 45 20 * * *")
+//@Scheduled(fixedDelay = 10000)
   public void sendInformationEmail() {
     long size = taskRepository.count();
   simpleEmailService.send(
