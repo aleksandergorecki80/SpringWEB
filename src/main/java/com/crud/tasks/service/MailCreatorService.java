@@ -9,6 +9,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,10 +47,12 @@ public class MailCreatorService {
 
     public String buildTrelloTasksEmail(Mail mail) {
         Optional<List<String>> tasks = mail.getTasks();
+        System.out.println(mail.getTasks().stream().findAny().isPresent());
         System.out.println(tasks);
         Context context = new Context();
         context.setVariable("tasks_message", mail.getMessage());
-        context.setVariable("tasks_button", "Do something");
+        context.setVariable("tasks_title_list", tasks.orElseGet(Collections::emptyList));
+        context.setVariable("show_details", mail.getTasks().stream().findAny().isPresent());
 
 
         return templateEngine.process("mail/created-trello-task-mail", context);
