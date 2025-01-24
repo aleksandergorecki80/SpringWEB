@@ -36,8 +36,8 @@ public class MailCreatorService {
         context.setVariable("tasks_url", "http://localhost/crud/");
         context.setVariable("button", "Visit website");
         context.setVariable("admin_name", adminConfig.getAdminName());
-        context.setVariable("goodbye_message", "Best regards, " + adminConfig.getInfoCompanyName() + " team.");
-        context.setVariable("company_details", adminConfig.getInfoCompanyName() + " \u25CF " + adminConfig.getInfoCompanyEmail() + " \u25CF " + adminConfig.getInfoCompanyPhone());
+        context.setVariable("goodbye_message", getGoodbyeMessage());
+        context.setVariable("company_details", getCompanyDetails());
         context.setVariable("show_button", true);
         context.setVariable("is_friend", true);
         context.setVariable("admin_config", adminConfig);
@@ -50,12 +50,23 @@ public class MailCreatorService {
         System.out.println(mail.getTasks().stream().findAny().isPresent());
         System.out.println(tasks);
         Context context = new Context();
+        context.setVariable("tasks_user_name", adminConfig.getAdminName());
         context.setVariable("tasks_message", mail.getMessage());
-        context.setVariable("tasks_title_list", tasks.orElseGet(Collections::emptyList));
         context.setVariable("show_details", mail.getTasks().stream().findAny().isPresent());
+        context.setVariable("tasks_title_list", tasks.orElseGet(Collections::emptyList));
+        context.setVariable("tasks_goodbye_message", getGoodbyeMessage());
+        context.setVariable("tasks_mail_company_details", getCompanyDetails());
 
 
         return templateEngine.process("mail/created-trello-task-mail", context);
+    }
+
+    private String getGoodbyeMessage() {
+        return "Best regards, " + adminConfig.getInfoCompanyName() + " team.";
+    }
+
+    private String getCompanyDetails() {
+        return adminConfig.getInfoCompanyName() + " \u25CF " + adminConfig.getInfoCompanyEmail() + " \u25CF " + adminConfig.getInfoCompanyPhone();
     }
 
 }
