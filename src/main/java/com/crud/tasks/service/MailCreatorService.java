@@ -10,6 +10,7 @@ import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -44,6 +45,8 @@ public class MailCreatorService {
     }
 
     public String buildTrelloTasksEmail(Mail mail) {
+        Optional<List<String>> tasks = mail.getTasks();
+        System.out.println(tasks);
         Context context = new Context();
         context.setVariable("tasks_message", mail.getMessage());
         context.setVariable("tasks_button", "Do something");
