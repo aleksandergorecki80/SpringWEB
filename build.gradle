@@ -42,6 +42,3 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-application {
-	mainClass = 'com.crud.tasks.TasksApplication'
-}
